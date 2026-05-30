@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manghi Arquitecto — Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Outfit:wght@200;300;400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #c8a96e;
+      --gold-dim: rgba(200,169,110,0.12);
+      --gold-border: rgba(200,169,110,0.3);
+      --bg: #0a0a0a;
+      --bg2: #111;
+      --text: #f0ece4;
+      --text-dim: rgba(240,236,228,0.45);
+      --text-faint: rgba(240,236,228,0.18);
+      --border: rgba(255,255,255,0.07);
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Outfit',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+
+    /* ── HEADER ── */
+    header {
+      padding: 36px 60px 32px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 0.5px solid var(--border);
+    }
+    .logo-img { height: 52px; opacity: 0.92; }
+    .header-right { text-align: right; }
+    .header-tagline { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-faint); font-weight: 300; }
+    .header-service { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); font-weight: 300; margin-top: 4px; }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 80px 60px 64px;
+      border-bottom: 0.5px solid var(--border);
+      display: flex; align-items: flex-end; justify-content: space-between; gap: 40px;
+    }
+    .hero-left { max-width: 520px; }
+    .hero-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; font-weight: 300; }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(36px, 5vw, 58px);
+      font-weight: 300; line-height: 1.15;
+      letter-spacing: 1px; color: var(--text);
+      margin-bottom: 20px;
+    }
+    .hero-desc { font-size: 14px; color: var(--text-dim); line-height: 1.8; font-weight: 300; max-width: 420px; }
+    .hero-right { flex-shrink: 0; text-align: right; }
+    .hero-stat { margin-bottom: 20px; }
+    .hero-stat-num { font-family: 'Cormorant Garamond', serif; font-size: 42px; font-weight: 300; color: var(--text); line-height: 1; }
+    .hero-stat-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-faint); margin-top: 4px; font-weight: 300; }
+    .hero-divider { width: 100%; height: 0.5px; background: var(--border); margin: 16px 0; }
+
+    /* ── FILTROS ── */
+    .filters {
+      padding: 28px 60px;
+      display: flex; align-items: center; gap: 10px;
+      border-bottom: 0.5px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .filter-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-faint); margin-right: 8px; font-weight: 300; }
+    .filter-btn {
+      padding: 7px 18px;
+      background: none; border: 0.5px solid var(--border);
+      border-radius: 2px; cursor: pointer;
+      font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--text-dim); font-family: 'Outfit', sans-serif;
+      font-weight: 300; transition: all 0.2s;
+    }
+    .filter-btn:hover { border-color: var(--gold-border); color: var(--text); }
+    .filter-btn.active { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
+
+    /* ── GRID ── */
+    .grid-section { padding: 48px 60px 80px; }
+    .grid-meta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; }
+    .grid-count { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-faint); font-weight: 300; }
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 0.5px solid var(--border);
+    }
+
+    /* ── TARJETA ── */
+    .card {
+      background: var(--bg);
+      cursor: pointer;
+      transition: background 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+    .card:hover { background: var(--bg2); }
+    .card:hover .card-img img { transform: scale(1.04); }
+    .card:hover .card-enter { opacity: 1; transform: translateY(0); }
+
+    .card-img {
+      width: 100%; aspect-ratio: 16/9;
+      overflow: hidden; position: relative;
+      background: #111;
+    }
+    .card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; display: block; }
+    .card-img-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-faint); }
+
+    .card-tag {
+      position: absolute; top: 14px; left: 14px;
+      font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--gold); background: rgba(8,8,8,0.75);
+      padding: 4px 10px; border-radius: 2px;
+      backdrop-filter: blur(4px);
+    }
+
+    .card-body { padding: 22px 24px 20px; }
+    .card-location { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-faint); margin-bottom: 8px; font-weight: 300; }
+    .card-title { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 300; letter-spacing: 1px; color: var(--text); margin-bottom: 6px; line-height: 1.2; }
+    .card-year { font-size: 11px; color: var(--text-dim); font-weight: 300; }
+
+    .card-footer {
+      padding: 14px 24px 18px;
+      border-top: 0.5px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .card-ambientes { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-faint); font-weight: 300; }
+    .card-enter {
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--gold); font-weight: 300;
+      display: flex; align-items: center; gap: 8px;
+      opacity: 0; transform: translateY(4px); transition: all 0.25s;
+    }
+    .card-enter-arrow { width: 20px; height: 1px; background: var(--gold); position: relative; }
+    .card-enter-arrow::after { content: ''; position: absolute; right: 0; top: -3px; width: 0; height: 0; border-left: 5px solid var(--gold); border-top: 3px solid transparent; border-bottom: 3px solid transparent; }
+
+    /* ── AGREGAR PROYECTO ── */
+    .card-add {
+      background: var(--bg);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 14px; cursor: default;
+      min-height: 280px;
+      border: 0.5px dashed rgba(255,255,255,0.1);
+    }
+    .add-circle { width: 48px; height: 48px; border-radius: 50%; border: 0.5px solid var(--border); display: flex; align-items: center; justify-content: center; }
+    .add-plus { font-size: 22px; color: var(--text-faint); line-height: 1; }
+    .add-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-faint); font-weight: 300; }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 32px 60px;
+      border-top: 0.5px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-copy { font-size: 11px; color: var(--text-faint); font-weight: 300; letter-spacing: 1px; }
+    .footer-contact { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); font-weight: 300; text-decoration: none; }
+    .footer-contact:hover { color: var(--text); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      header { padding: 24px 24px 20px; }
+      .logo-img { height: 38px; }
+      .hero { padding: 48px 24px 40px; flex-direction: column; gap: 32px; }
+      .hero-right { text-align: left; display: flex; gap: 32px; }
+      .hero-stat { margin-bottom: 0; }
+      .hero-divider { display: none; }
+      .filters { padding: 20px 24px; }
+      .grid-section { padding: 32px 24px 60px; }
+      .projects-grid { grid-template-columns: 1fr; }
+      footer { padding: 24px; flex-direction: column; gap: 12px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <img src="logo.png" alt="Manghi Arquitecto" class="logo-img">
+  <div class="header-right">
+    <div class="header-tagline">Visualización arquitectónica</div>
+    <div class="header-service">Recorridos Virtuales 360°</div>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-left">
+    <div class="hero-label">Portfolio de proyectos</div>
+    <h1 class="hero-title">Arquitectura en movimiento</h1>
+    <p class="hero-desc">Cada proyecto es una experiencia inmersiva. Recorridos virtuales de alta fidelidad para desarrolladoras, arquitectos y clientes que quieren ver antes de construir.</p>
+  </div>
+  <div class="hero-right">
+    <div class="hero-stat">
+      <div class="hero-stat-num" id="count-total">2</div>
+      <div class="hero-stat-label">Proyectos</div>
+    </div>
+    <div class="hero-divider"></div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">360°</div>
+      <div class="hero-stat-label">Experiencia inmersiva</div>
+    </div>
+  </div>
+</div>
+
+<!-- FILTROS -->
+<div class="filters">
+  <span class="filter-label">Filtrar</span>
+  <button class="filter-btn active" onclick="filtrar('todos', this)">Todos</button>
+  <button class="filter-btn" onclick="filtrar('residencial', this)">Residencial</button>
+  <button class="filter-btn" onclick="filtrar('comercial', this)">Comercial</button>
+  <button class="filter-btn" onclick="filtrar('desarrolladora', this)">Desarrolladora</button>
+</div>
+
+<!-- GRID -->
+<div class="grid-section">
+  <div class="grid-meta">
+    <div class="grid-count" id="grid-count">2 proyectos</div>
+  </div>
+  <div class="projects-grid" id="projects-grid">
+    <!-- generado por JS -->
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-copy">© 2025 Manghi Arquitecto — Bahía Blanca, Argentina</div>
+  <a href="mailto:contacto@arqmanghi.com" class="footer-contact">Contacto</a>
+</footer>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+//  PROYECTOS — agregá o quitá proyectos acá
+//  · img: ruta a la imagen de portada (puede ser un render estático)
+//  · url: link al tour virtual (tu GitHub Pages)
+//  · tag: categoría para el filtro
+//  · ambientes: texto descriptivo
+// ═══════════════════════════════════════════════════════════════
+
+const PROYECTOS = [
+  {
+    id: "casa-rocha",
+    nombre: "Casa Rocha",
+    ubicacion: "Bahía Blanca",
+    año: "2025",
+    tag: "residencial",
+    ambientes: "5 ambientes",
+    img: "thumbs/casa-rocha.jpg",
+    url: "https://arqmanghi.github.io/Casa_Rocha/"
+  },
+  {
+    id: "casa-martinez",
+    nombre: "Casa Martinez",
+    ubicacion: "Bahía Blanca",
+    año: "2025",
+    tag: "residencial",
+    ambientes: "3 ambientes",
+    img: "thumbs/casa-martinez.jpg",
+    url: "https://arqmanghi.github.io/Casa_Martinez/"
+  }
+  // Para agregar un proyecto nuevo, copiá uno de los bloques de arriba
+  // y cambià los datos. Así de simple.
+];
+
+// ═══════════════════════════════════════════════════════════════
+//  MOTOR — no tocar
+// ═══════════════════════════════════════════════════════════════
+
+let filtroActual = 'todos';
+
+function filtrar(tag, btn) {
+  filtroActual = tag;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderGrid();
+}
+
+function renderGrid() {
+  const grid = document.getElementById('projects-grid');
+  const countEl = document.getElementById('grid-count');
+  const totalEl = document.getElementById('count-total');
+
+  const filtrados = filtroActual === 'todos'
+    ? PROYECTOS
+    : PROYECTOS.filter(p => p.tag === filtroActual);
+
+  countEl.textContent = filtrados.length + ' proyecto' + (filtrados.length !== 1 ? 's' : '');
+  totalEl.textContent = PROYECTOS.length;
+
+  grid.innerHTML = '';
+
+  filtrados.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.onclick = () => window.open(p.url, '_blank');
+    card.innerHTML = `
+      <div class="card-img">
+        <img src="${p.img}" alt="${p.nombre}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="card-img-placeholder" style="display:none;position:absolute;inset:0;">Sin imagen</div>
+        <div class="card-tag">${p.tag.toUpperCase()}</div>
+      </div>
+      <div class="card-body">
+        <div class="card-location">${p.ubicacion}</div>
+        <div class="card-title">${p.nombre}</div>
+        <div class="card-year">${p.año}</div>
+      </div>
+      <div class="card-footer">
+        <div class="card-ambientes">${p.ambientes}</div>
+        <div class="card-enter">
+          Ver recorrido
+          <div class="card-enter-arrow"></div>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+
+  // Tarjeta "próximo proyecto"
+  const addCard = document.createElement('div');
+  addCard.className = 'card card-add';
+  addCard.innerHTML = `
+    <div class="add-circle"><div class="add-plus">+</div></div>
+    <div class="add-label">Próximo proyecto</div>
+  `;
+  grid.appendChild(addCard);
+}
+
+renderGrid();
+</script>
+
+</body>
+</html>
